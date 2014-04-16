@@ -6,8 +6,6 @@ using namespace std;
 void print_board(vector< vector<char> > board);
 bool find_soln(int r, int c, int m, vector< vector<char> >& board);
 
-enum { VERTICAL, HORIZONTAL };
-
 int main(void)
 {
 	ios_base::sync_with_stdio(false);
@@ -22,7 +20,8 @@ int main(void)
 		vector<char> row(C, '*');
 		vector< vector<char> > board(R, row);
 
-		cout << "Case " << i+1 << ":\n";
+		cout << "Case #" << i+1 << ":\n";
+		// cout << "r:" << R << " c:" << C << " m:" << M << endl;
 		if ( find_soln(R, C, M, board) )
 		{
 			print_board(board);
@@ -38,7 +37,7 @@ int main(void)
 
 }
 
-// C++11
+
 void print_board(vector< vector<char> > board)
 {
 	for( vector< vector<char> >::iterator i = board.begin(); i != board.end(); ++i)
@@ -56,16 +55,15 @@ bool find_soln(const int r, const int c, const int m, vector< vector<char> >& bo
 {
 	// assume there are always mines
 	const int n = r*c - m;
-	// cout << n << ", " << r << ", " << c << endl;
 
 	// more mines than cells
 	if (m >= r*c)
 		return false;
 
 	// case for a single row or column
-	if (r == 1 || c == 1)
+	else if (r == 1 || c == 1)
 	{
-		std::vector<int>::size_type len;
+		vector<int>::size_type len;
 		len = board[0].size();
 		for (int i = 0; i < r*c-m; i++)
 		{
@@ -74,33 +72,46 @@ bool find_soln(const int r, const int c, const int m, vector< vector<char> >& bo
 			else
 				board[i][0] = '.';
 		}
-		board[0][0] = 'c';
-		return true;
 	}
 
+	// one non-mine, do nothing
+	else if (n == 1) {}
+
 	// n less than 4
-	if (n%2==0 && n < 4)
+	else if (n<4)
 		return false;
 
-	// n is odd and less than 9
-	if (n%2!=0 && n<9 && r<=3 && c<=3) // odd
+	// n is odd and has either two rows or two columns
+	else if (n%2!=0 && (r==2 || c==2)) // odd
 		return false;
 
+	// TODO almost there.. check case 52
+	// n is odd and can't be filled in two rows
+	// else if (n/c < 2 && n%2!=0)
+		// return false;
+
+	// one mine
+	else if (m == 1)
+	{
+		vector<char> tmp(c, '.');
+		fill(board.begin(), board.end(), tmp);
+		board[r-1][c-1] = '*';
+	}
 	// if we can't fill two rows...
-	if (n/r < 2 && n%2==0) // even
+	else if (n/c < 2 && n%2==0) // even
 	{
 		fill_n(board[0].begin(), n/2, '.');
 		fill_n(board[1].begin(), n/2, '.');
 	}
-	else if ((n-3)/r < 2 && n%2!=0) // odd
+	// else if ((n-3)/r < 2 && n%2!=0) // odd
+	else if ((n-3)/c < 2 && n%2!=0) // odd
 	{
-		fill_n(board[0].begin(), n/2, '.');
 		fill_n(board[0].begin(), (n-3)/2, '.');
 		fill_n(board[1].begin(), (n-3)/2, '.');
 		fill_n(board[2].begin(), 3, '.');
 	}
-	// otherwise...
-	else
+	// we have fill more than two rows of non-mines
+	else if (n/c >= 2)
 	{
 		int i;
 		for (i = 0; i < n/c; i++)
@@ -108,7 +119,7 @@ bool find_soln(const int r, const int c, const int m, vector< vector<char> >& bo
 			fill(board[i].begin(), board[i].end(), '.');
 		}
 		// if there is one extra non-mine cell
-		if ( n%c == 1 )
+		if (n%c == 1)
 		{
 			board[i][0] = '.';
 			board[i][1] = '.';
@@ -118,6 +129,10 @@ bool find_soln(const int r, const int c, const int m, vector< vector<char> >& bo
 		{
 			fill_n(board[i].begin(), n%c, '.');
 		}
+	}
+	else
+	{
+		cout << "ERROR!!" << endl;
 	}
 	
 	board[0][0] = 'c';
