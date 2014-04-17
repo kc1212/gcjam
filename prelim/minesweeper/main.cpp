@@ -21,7 +21,6 @@ int main(void)
 		vector< vector<char> > board(R, row);
 
 		cout << "Case #" << i+1 << ":\n";
-		// cout << "r:" << R << " c:" << C << " m:" << M << endl;
 		if ( find_soln(R, C, M, board) )
 		{
 			print_board(board);
@@ -30,11 +29,8 @@ int main(void)
 		{
 			cout << "Impossible" << endl;
 		}
-
-
 	}
 	return 0;
-
 }
 
 
@@ -82,13 +78,11 @@ bool find_soln(const int r, const int c, const int m, vector< vector<char> >& bo
 		return false;
 
 	// n is odd and has either two rows or two columns
-	else if (n%2!=0 && (r==2 || c==2)) // odd
+	else if (n%2!=0 && (r==2 || c==2))
 		return false;
 
-	// TODO almost there.. check case 52
-	// n is odd and can't be filled in two rows
-	// else if (n/c < 2 && n%2!=0)
-		// return false;
+	else if (n%2!=0 && n < 9)
+		return false;
 
 	// one mine
 	else if (m == 1)
