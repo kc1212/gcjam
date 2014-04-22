@@ -1,12 +1,8 @@
 #include <iostream>
-#include <cmath>
 
 using namespace std;
 
-const double pi = 3.1415926535897932;
-const double pi_inv = 0.3183098861837907;
-
-int paint_target(const double _r, const double _t);
+int paint_target(const long long _r, const long long _t);
 
 int main(void)
 {
@@ -16,8 +12,8 @@ int main(void)
 
 	for (int i = 0; i < T; i++)
 	{
-		double r; // radius
-		double t; // milli-L of paint
+		long long r; // radius
+		long long t; // milli-L of paint
 		cin >> r >> t;
 
 		cout << "Case #" << i+1 << ": ";
@@ -27,16 +23,16 @@ int main(void)
 	return 0;
 }
 
-int paint_target(const double _r, const double _t)
+int paint_target(const long long _r, const long long _t)
 {
 	int ctr = 0;
-	double r = _r + 1;
-	double rem = _t; // remaining paint
+	long long r = _r + 1;
+	long long rem = _t; // remaining paint
 
 	do
 	{
 		ctr++;
-		rem = rem - ( pow(r,2) - pow(r-1,2) );
+		rem = rem - ( r*r - (r-1)*(r-1) );
 		r+=2;
 	}
 	while (rem >= 0);
