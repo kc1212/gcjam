@@ -40,4 +40,10 @@ int paint_target(const long long _r, const long long _t)
 	return ctr-1;
 }
 
+// use binary search on equation n(2n + 2r -1)
+// int paint_target2(const long long _r, const long long _t)
+// {
+// }
+
+
 
