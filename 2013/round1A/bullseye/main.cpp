@@ -2,7 +2,8 @@
 
 using namespace std;
 
-int paint_target(const long long _r, const long long _t);
+int paint_target(const unsigned long long r, const unsigned long long t);;
+bool check(const unsigned long long mid, const unsigned long long r, const unsigned long long t);
 
 int main(void)
 {
@@ -12,8 +13,8 @@ int main(void)
 
 	for (int i = 0; i < T; i++)
 	{
-		long long r; // radius
-		long long t; // milli-L of paint
+		unsigned long long r; // radius
+		unsigned long long t; // milli-L of paint
 		cin >> r >> t;
 
 		cout << "Case #" << i+1 << ": ";
@@ -23,27 +24,34 @@ int main(void)
 	return 0;
 }
 
-int paint_target(const long long _r, const long long _t)
+// use binary search on equation n(2n + 2r -1)
+// arithmetic series (http://en.wikipedia.org/wiki/Arithmetic_series)
+int paint_target(const unsigned long long r, const unsigned long long t)
 {
-	int ctr = 0;
-	long long r = _r + 1;
-	long long rem = _t; // remaining paint
+	unsigned long long low = 1;
+	unsigned long long high = 2;
 
-	do
+	while (check(high,r,t))
 	{
-		ctr++;
-		rem = rem - ( r*r - (r-1)*(r-1) );
-		r+=2;
+		low = high;
+		high *= 2;
 	}
-	while (rem >= 0);
 
-	return ctr-1;
+	while ( low < high )
+	{
+		unsigned long long mid = (low + high + 1)/2;
+		// cout << mid << " | " << mid*(2*r + 2*mid-1) << " | " << t;
+		if ( check(mid, r, t) )
+			low = mid;
+		else
+			high = mid - 1;
+	}
+	return low;
 }
 
-// use binary search on equation n(2n + 2r -1)
-// int paint_target2(const long long _r, const long long _t)
-// {
-// }
-
+bool check(const unsigned long long mid, const unsigned long long r, const unsigned long long t)
+{
+	return mid*(2*r + 2*mid-1) <= t;
+}
 
 
