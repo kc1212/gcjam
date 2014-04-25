@@ -26,7 +26,7 @@ int main(void)
 			v.push_back(tmp);
 		}
 		naive_max_gain(e, e, r, 0, results, v, 0);
-		cout << *max_element(results.begin(), results.end()) << endl;
+		cout << "Case #" << i << ": " << *max_element(results.begin(), results.end()) << endl;
 	}
 
 	return 0;
