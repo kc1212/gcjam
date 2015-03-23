@@ -8,7 +8,7 @@ showResult :: Result -> String
 showResult XWon = "X won"
 showResult OWon = "O won"
 showResult Draw = "Draw"
-showResult NotCompleted = "Game as not completed"
+showResult NotCompleted = "Game has not completed"
 
 checkDiagonal :: [String] -> (Char -> Bool) -> Bool
 checkDiagonal inp cmp =
