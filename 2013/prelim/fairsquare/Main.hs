@@ -5,11 +5,12 @@ import Control.Monad
 solve :: (Integer,Integer) -> Int
 solve (start,fin) =
     -- this won't work if x is 10^100
-    let mysqrt = sqrt . fromIntegral
+    let mysqrt  = sqrt . fromIntegral
         test1 x = reverse (show x) == show x
-        test2 x = floor (mysqrt x) == ceiling (mysqrt x)
-        test3 x = reverse (show $ floor (mysqrt x)) == show (floor (mysqrt x))
-    in length $ filter (\x -> test1 x && test2 x && test3 x) [start .. fin]
+        test2 x = reverse (show (x^2)) == show (x^2)
+        start'  = ceiling (mysqrt start) :: Integer
+        fin'    = floor (mysqrt fin) :: Integer
+    in length $ filter (\x -> test1 x && test2 x) [start' .. fin']
 
 readInput :: IO (Integer,Integer)
 readInput = do
